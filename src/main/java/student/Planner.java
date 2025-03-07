@@ -87,6 +87,10 @@ public class Planner implements IPlanner {
             case "~=" -> gameValue.toLowerCase().contains(condition.toLowerCase());
             case "==" -> gameValue.equalsIgnoreCase(condition);
             case "!=" -> !gameValue.equalsIgnoreCase(condition);
+            case ">" -> gameValue.compareToIgnoreCase(condition) > 0;
+            case "<" -> gameValue.compareToIgnoreCase(condition) < 0;
+            case ">=" -> gameValue.compareToIgnoreCase(condition) >= 0;
+            case "<=" -> gameValue.compareToIgnoreCase(condition) <= 0;
             default -> throw new IllegalArgumentException("Invalid operator: " + operator);
         };
     }
