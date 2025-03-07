@@ -60,11 +60,26 @@ public class Planner implements IPlanner {
     }
 
     private String[] splitCondition(String condition) {
-        String[] parts = condition.split("(?<=<=|>=|==|!=|~=|<|>|=)(?=[^><=!~])", 3);
-        if (parts.length != 3) {
-            throw new IllegalArgumentException("Invalid condition: " + condition);
+
+        String[] operators = {"~=", "!=", "==", ">=", "<=", ">", "<"};
+
+        String columnName = null;
+        String operator = null;
+        String value = null;
+
+        for (String op : operators) {
+            int index = condition.indexOf(op);
+            if (index != -1) {
+                columnName = condition.substring(0, index);
+                operator = op;
+                value = condition.substring(index + op.length());
+                break;
+            }
         }
-        return new String[] {parts[0], parts[1], parts[2]};
+
+
+
+        return new String[]{columnName, operator, value};
     }
 
     private boolean compareString(String gameValue, String operator, String condition) {
