@@ -70,9 +70,9 @@ public class Planner implements IPlanner {
         for (String op : operators) {
             int index = condition.indexOf(op);
             if (index != -1) {
-                columnName = condition.substring(0, index);
-                operator = op;
-                value = condition.substring(index + op.length());
+                columnName = condition.substring(0, index).trim();
+                operator = op.trim();
+                value = condition.substring(index + op.length()).trim();
                 break;
             }
         }
