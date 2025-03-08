@@ -7,11 +7,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * a class that represent game what want to play.
+ */
 public class GameList implements IGameList {
-
+    /**
+     * a wish list that stores selected games.
+     */
     private final Set<BoardGame> wishList;
 
     /**
@@ -22,7 +26,11 @@ public class GameList implements IGameList {
         wishList = new HashSet<>();
     }
 
-
+    /**
+     * get a list of game names in String format.
+     *
+     * @return String list of game names.
+     */
     @Override
     public List<String> getGameNames() {
         // TODO Auto-generated method stub
@@ -32,18 +40,37 @@ public class GameList implements IGameList {
                 .toList();
     }
 
+    /**
+     * clear the wish list.
+     */
     @Override
     public void clear() {
         // TODO Auto-generated method stub
         wishList.clear();
     }
 
+    /**
+     * count how many games in the wishlist.
+     *
+     * @return return the length of wishlist.
+     */
     @Override
     public int count() {
         // TODO Auto-generated method stub
         return wishList.size();
     }
 
+    /**
+     * Saves the list of games to a file.
+     * <p>
+     * The contents of the file will be each game name on a new line. It will
+     * overwrite the file if
+     * it already exists.
+     * <p>
+     * Saves them in the same order as getGameNames.
+     *
+     * @param filename The name of the file to save the list to.
+     */
     @Override
     public void saveGame(String filename) {
         // TODO Auto-generated method stub
@@ -60,6 +87,34 @@ public class GameList implements IGameList {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Adds a game or games to the list.
+     * <p>
+     * If a single name is specified, that takes priority. However, it could also
+     * use a number such
+     * as 1 which would indicate game 1 from the current filtered list should be
+     * added to the list.
+     * (1 being the first game in the list, normal counting).
+     * <p>
+     * A range can also be added, so if 1-5 was presented, it is assumed that games
+     * 1 through 5
+     * should be added to the list - or if the number is larger than the filtered
+     * group 1-n (with n
+     * being the last game in the filter). 1-1 type formatting
+     * is allowed, and treated as just adding a single game.
+     * <p>
+     * If "all" is specified, then all games in the filtered collection should be
+     * added to the list.
+     * <p>
+     * If any part of the string is not valid, an IllegalArgumentException should be
+     * thrown. Such as
+     * ranges being out of range.
+     *
+     * @param str      the string to parse and add games to the list.
+     * @param filtered the filtered list to use as a basis for adding.
+     * @throws IllegalArgumentException if the string is not valid.
+     */
 
     @Override
     public void addToList(String str, Stream<BoardGame> filtered) throws IllegalArgumentException {
@@ -105,6 +160,24 @@ public class GameList implements IGameList {
         }
     }
 
+    /**
+     * Removes a game or games from the list.
+     * <p>
+     * If a single name is specified, that takes priority. However, it could also
+     * use a number such
+     * as 1 which would indicate game 1 from the current games list should be
+     * removed. A range can
+     * also be specified to remove multiple games.
+     * <p>
+     * If all is provided, then clear should be called.
+     * <p>
+     * If any part of the string is not valid, an IllegalArgumentException should be
+     * thrown. Such as
+     * ranges being out of range, or none of the results doing anything.
+     *
+     * @param str The string to parse and remove games from the list.
+     * @throws IllegalArgumentException If the string is not valid.
+     */
 
     @Override
     public void removeFromList(String str) throws IllegalArgumentException {
