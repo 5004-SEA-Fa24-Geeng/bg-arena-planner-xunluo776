@@ -175,8 +175,8 @@ public class Planner implements IPlanner {
     }
 
     /**
-     * splits a filter condition to 3 parts,
-     * for example split difficulty>3 to [difficulty, >, 3]
+     * splits a filter condition to 3 parts.
+     * for example split difficulty>3 to [difficulty, >, 3].
      *
      * @param condition a filter condition.
      * @return a String array that contains 3 parts.
@@ -276,23 +276,24 @@ public class Planner implements IPlanner {
      * @return a comparator based on input col.
      */
     public Comparator<BoardGame> comparator(GameData sortOn, boolean ascending) {
-        Comparator<BoardGame> comparator;
-        switch (sortOn) {
-            case NAME -> comparator = (a, b) -> a.getName().compareToIgnoreCase(b.getName());
-            case ID -> comparator = (a, b) -> Integer.compare(a.getId(), b.getId());
-            case RANK -> comparator = (a, b) -> Integer.compare(a.getRank(), b.getRank());
-            case YEAR -> comparator = (a, b) -> Integer.compare(a.getYearPublished(), b.getYearPublished());
-            case RATING -> comparator = (a, b) -> Double.compare(a.getRating(), b.getRating());
-            case MAX_TIME -> comparator = (a, b) -> Integer.compare(a.getMaxPlayTime(), b.getMaxPlayTime());
-            case MIN_TIME -> comparator = (a, b) -> Integer.compare(a.getMinPlayTime(), b.getMinPlayTime());
-            case DIFFICULTY -> comparator = (a, b) -> Double.compare(a.getDifficulty(), b.getDifficulty());
-            case MAX_PLAYERS -> comparator = (a, b) -> Integer.compare(a.getMaxPlayers(), b.getMaxPlayers());
-            case MIN_PLAYERS -> comparator = (a, b) -> Integer.compare(a.getMinPlayers(), b.getMinPlayers());
+        Comparator<BoardGame> comparator = switch (sortOn) {
+            case NAME -> (a, b) -> a.getName().compareToIgnoreCase(b.getName());
+            case ID -> (a, b) -> Integer.compare(a.getId(), b.getId());
+            case RANK -> (a, b) -> Integer.compare(a.getRank(), b.getRank());
+            case YEAR -> (a, b) -> Integer.compare(a.getYearPublished(), b.getYearPublished());
+            case RATING -> (a, b) -> Double.compare(a.getRating(), b.getRating());
+            case MAX_TIME -> (a, b) -> Integer.compare(a.getMaxPlayTime(), b.getMaxPlayTime());
+            case MIN_TIME -> (a, b) -> Integer.compare(a.getMinPlayTime(), b.getMinPlayTime());
+            case DIFFICULTY -> (a, b) -> Double.compare(a.getDifficulty(), b.getDifficulty());
+            case MAX_PLAYERS -> (a, b) -> Integer.compare(a.getMaxPlayers(), b.getMaxPlayers());
+            case MIN_PLAYERS -> (a, b) -> Integer.compare(a.getMinPlayers(), b.getMinPlayers());
             default -> throw new IllegalArgumentException("Invalid sortOn: " + sortOn);
-        }
+        };
+
         if (!ascending) {
             comparator = comparator.reversed();
         }
+
         return comparator;
     }
 
