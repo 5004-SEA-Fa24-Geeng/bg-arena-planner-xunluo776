@@ -367,7 +367,154 @@ For the final design, you just need to do a single diagram that includes both th
 
 > [!WARNING]
 > If you resubmit your assignment for manual grading, this is a section that often needs updating. You should double check with every resubmit to make sure it is up to date.
+```mermaid
+classDiagram
+direction BT
+class BGArenaPlanner {
+  - BGArenaPlanner() 
+  - String DEFAULT_COLLECTION
+  + main(String[]) void
+}
+class BoardGame {
+  + BoardGame(String, int, int, int, int, int, double, int, double, int) 
+  - double averageRating
+  - int id
+  - int maxPlayTime
+  - int yearPublished
+  - double difficulty
+  - int rank
+  - int minPlayers
+  - int minPlayTime
+  - String name
+  - int maxPlayers
+  + toStringWithInfo(GameData) String
+  + getMaxPlayTime() int
+  + getDifficulty() double
+  + getId() int
+  + getMinPlayers() int
+  + getMinPlayTime() int
+  + equals(Object) boolean
+  + getMaxPlayers() int
+  + getName() String
+  + hashCode() int
+  + main(String[]) void
+  + getYearPublished() int
+  + getRating() double
+  + toString() String
+  + getRank() int
+}
+class ConsoleApp {
+  + ConsoleApp(IGameList, IPlanner) 
+  - Random RND
+  - Scanner current
+  - IGameList gameList
+  - Scanner IN
+  - IPlanner planner
+  - String DEFAULT_FILENAME
+  - processHelp() void
+  - printOutput(String, Object[]) void
+  - getInput(String, Object[]) String
+  - nextCommand() ConsoleText
+  + start() void
+  - processFilter() void
+  - remainder() String
+  - randomNumber() void
+  - printFilterStream(Stream~BoardGame~, GameData) void
+  - processListCommands() void
+  - printCurrentList() void
+}
+class GameData {
+<<enumeration>>
+  - GameData(String) 
+  - String columnName
+  +  RANK
+  +  MIN_PLAYERS
+  +  NAME
+  +  DIFFICULTY
+  +  MAX_PLAYERS
+  +  YEAR
+  +  ID
+  +  RATING
+  +  MAX_TIME
+  +  MIN_TIME
+  + fromColumnName(String) GameData
+  + values() GameData[]
+  + getColumnName() String
+  + valueOf(String) GameData
+  + fromString(String) GameData
+}
+class GameList {
+  + GameList() 
+  - Set~BoardGame~ wishList
+  + saveGame(String) void
+  + removeFromList(String) void
+  + addToList(String, Stream~BoardGame~) void
+  + clear() void
+  + getGameNames() List~String~
+  + count() int
+}
+class GamesLoader {
+  - GamesLoader() 
+  - String DELIMITER
+  + loadGamesFile(String) Set~BoardGame~
+  - processHeader(String) Map~GameData, Integer~
+  - toBoardGame(String, Map~GameData, Integer~) BoardGame?
+}
+class IGameList {
+<<Interface>>
+  + String ADD_ALL
+  + count() int
+  + addToList(String, Stream~BoardGame~) void
+  + saveGame(String) void
+  + getGameNames() List~String~
+  + removeFromList(String) void
+  + clear() void
+}
+class IPlanner {
+<<Interface>>
+  + filter(String) Stream~BoardGame~
+  + filter(String, GameData) Stream~BoardGame~
+  + filter(String, GameData, boolean) Stream~BoardGame~
+  + reset() void
+}
+class Operations {
+<<enumeration>>
+  - Operations(String) 
+  +  CONTAINS
+  +  GREATER_THAN_EQUALS
+  - String operator
+  +  GREATER_THAN
+  +  LESS_THAN_EQUALS
+  +  NOT_EQUALS
+  +  LESS_THAN
+  +  EQUALS
+  + getOperatorFromStr(String) Operations?
+  + valueOf(String) Operations
+  + fromOperator(String) Operations
+  + values() Operations[]
+  + getOperator() String
+}
+class Planner {
+  + Planner(Set~BoardGame~) 
+  - Set~BoardGame~ originalGames
+  - Set~BoardGame~ filteredGames
+  + compareString(String, String, String) boolean
+  + compareInt(int, String, String) boolean
+  + filter(String) Stream~BoardGame~
+  + splitCondition(String) String[]
+  + filter(String, GameData) Stream~BoardGame~
+  + reset() void
+  + getFilteredGames() Set~BoardGame~
+  + compareDouble(double, String, String) boolean
+  + matchCondition(BoardGame, String) boolean
+  + filter(String, GameData, boolean) Stream~BoardGame~
+  + comparator(GameData, boolean) Comparator~BoardGame~
+}
 
+GameList  ..>  IGameList 
+Planner  ..>  IPlanner 
+
+```
 
 
 
@@ -378,3 +525,6 @@ For the final design, you just need to do a single diagram that includes both th
 > The value of reflective writing has been highly researched and documented within computer science, from learning to information to showing higher salaries in the workplace. For this next part, we encourage you to take time, and truly focus on your retrospective.
 
 Take time to reflect on how your design has changed. Write in *prose* (i.e. do not bullet point your answers - it matters in how our brain processes the information). Make sure to include what were some major changes, and why you made them. What did you learn from this process? What would you do differently next time? What was the most challenging part of this process? For most students, it will be a paragraph or two. 
+
+> this class needs different comparators to compare different data types like String, int, and double, so I wrote a comparator method to get data type from enum class, and then using switch to pick comparator. I noticed that the user input condition might be like this "year>1999". i need to split the condition to 3 parts col, operator, and condition. so I wrote splitCondition, I was using regex but it did not work well, so I used the for loop to 
+> to split it. and I wrote some compare methods for different data type, this is for the matchCondition method. matchCondition method is to check if the game passes the condition, if pass, i will store it and update to filtered games set. after looping through all the elements using matchCondition, the filter() will have a filtered set, then sort based on the requirement and return a filtered and sorted stream. overall, this project taught me a lot about designing code, and I feel much more confident in handling filtering and sorting logic now.

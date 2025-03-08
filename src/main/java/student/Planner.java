@@ -205,6 +205,8 @@ public class Planner implements IPlanner {
 
     /**
      * compare two Strings based on operator.
+     * tried to make all the following methods private,
+     * but i d unit test woundnt let me test private methods.
      *
      * @param gameValue actual game value.
      * @param operator  operator.
